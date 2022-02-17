@@ -1,0 +1,43 @@
+{% extends 'parts/base.twig' %}
+
+{% block body %}
+    <h1>Наши товары</h1>
+
+
+    {% if message is not null %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+    {% endif %}
+    <div id="consumer-list">
+        {%  set flag = 0 %}
+        {% for products in product %}
+            {% if products.Available_number == 0 %}
+                {% set flag = 1 %}
+            {% endif %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ products.Type_furniture }} </h5>
+                    <p class="card-text">
+                        <b>Цена:</b> {{products.Price }}
+                        <br>
+                        <b>Код:</b> {{ products.Code }}
+                        <br>
+                        <b>Количество:</b> {{ products.Available_number }}
+                    </p>
+                </div>
+            <div class="card-footer text-muted">
+                <a href="/basket-post-delete/{{ products.Basket_Product_id }}/" class="btn">Удалить из корзины</a>
+            </div>
+            </div>
+        {% endfor %}
+        {% if flag == 0 %}
+        <div class="card-footer text-muted">
+            <a href="/basket-post/{{ user.user_id }}/" class="btn">Купить</a>
+        </div>
+        {% else %}
+        <h5>Удалите товары, которых нет в наличии</h5>
+        {% endif %}
+    </div>
+
+{% endblock %}
